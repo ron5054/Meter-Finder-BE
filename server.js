@@ -23,10 +23,6 @@ if (process.env.NODE_ENV === 'production') {
   app.use(cors(corsOptions))
 }
 
-app.get('/**', (req, res) => {
-  res.sendFile(path.resolve('public/index.html'))
-})
-
 app.post('/add', async (req, res) => {
   const newMeter = req.body
   try {
@@ -53,3 +49,7 @@ app.get('/meter/:num', async (req, res) => {
 
 const port = 3030
 server.listen(port, () => console.log(`Server is running on port ${port}`))
+
+app.get('/**', (req, res) => {
+  res.sendFile(path.resolve('public/index.html'))
+})
