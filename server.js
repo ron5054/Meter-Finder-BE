@@ -19,6 +19,10 @@ const corsOptions = {
 
 app.use(cors(corsOptions))
 
+app.get('/**', (req, res) => {
+  res.sendFile(path.resolve('public/index.html'))
+})
+
 app.post('/add', async (req, res) => {
   const newMeter = req.body
   try {
