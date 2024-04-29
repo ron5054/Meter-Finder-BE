@@ -8,17 +8,20 @@ const app = express()
 const server = createServer(app)
 app.use(express.json())
 
-const corsOptions = {
-  origin: [
-    'http://127.0.0.1:3000',
-    'http://localhost:3000',
-    'http://127.0.0.1:5173',
-    'http://localhost:5173',
-  ],
-  credentials: true,
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.resolve('public')))
+} else {
+  const corsOptions = {
+    origin: [
+      'http://127.0.0.1:3000',
+      'http://localhost:3000',
+      'http://127.0.0.1:5173',
+      'http://localhost:5173',
+    ],
+    credentials: true,
+  }
+  app.use(cors(corsOptions))
 }
-
-app.use(cors(corsOptions))
 
 app.get('/**', (req, res) => {
   res.sendFile(path.resolve('public/index.html'))
