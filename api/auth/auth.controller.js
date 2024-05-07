@@ -18,8 +18,6 @@ export async function login(req, res) {
       sameSite: 'strict',
     })
 
-    console.log('is production?', process.env.NODE_ENV === 'production')
-
     res.json(user)
   } catch (err) {
     console.error(err)
