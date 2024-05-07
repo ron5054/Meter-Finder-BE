@@ -1,0 +1,42 @@
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+
+import { userService } from '../user/user.service.js'
+
+export const authService = {
+  signup,
+  login,
+}
+
+async function login(username, password) {
+  const user = await userService.getByUsername(username)
+  if (!user) return Promise.reject('Invalid username or password')
+
+  const match = await bcrypt.compare(password, user.password)
+  if (!match) return Promise.reject('Invalid username or password')
+
+  const token = jwt.sign(
+    { id: user._id, username: user.username },
+    process.env.JWT_SECRET,
+    { expiresIn: '365d' }
+  )
+
+  delete user.password
+  return { user, token }
+}
+
+async function signup({ username, password }) {
+  const saltRounds = 10
+
+  if (!username || !password)
+    return Promise.reject('Missing required signup information')
+
+  const hash = await bcrypt.hash(password, saltRounds)
+
+  await userService.add({
+    username,
+    password: hash,
+  })
+}
+
+await signup({ username: 'eyallevy', password: '0528557640' })
