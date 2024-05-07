@@ -9,7 +9,6 @@ export async function login(req, res) {
 
   try {
     const { user, token } = await authService.login(username, password)
-
     if (!user) return res.status(401).send('Invalid username or password')
 
     res.cookie('token', token, {
@@ -18,6 +17,8 @@ export async function login(req, res) {
       maxAge: 1000 * 60 * 60 * 24 * 365,
       sameSite: 'strict',
     })
+
+    console.log('is production?', process.env.NODE_ENV === 'production')
 
     res.json(user)
   } catch (err) {

@@ -10,9 +10,11 @@ export const authService = {
 
 async function login(username, password) {
   const user = await userService.getByUsername(username)
+  console.log('🚀 ~ login ~ user:', user)
   if (!user) return Promise.reject('Invalid username or password')
 
   const match = await bcrypt.compare(password, user.password)
+  console.log('🚀 ~ login ~ match:', match)
   if (!match) return Promise.reject('Invalid username or password')
 
   const token = jwt.sign(
@@ -20,6 +22,7 @@ async function login(username, password) {
     process.env.JWT_SECRET,
     { expiresIn: '365d' }
   )
+  console.log('🚀 ~ login ~ token:', token)
 
   delete user.password
   return { user, token }
