@@ -38,5 +38,3 @@ async function signup({ username, password }) {
     password: hash,
   })
 }
-
-await signup({ username: 'eyallevy', password: '0528557640' })

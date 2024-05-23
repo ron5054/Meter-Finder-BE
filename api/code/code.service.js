@@ -1,4 +1,6 @@
 import { dbService } from '../../db/db.service.js'
+import mongodb from 'mongodb'
+const { ObjectId } = mongodb
 
 async function addCode(newCode) {
   try {
@@ -38,4 +40,22 @@ async function getCodes(location) {
   }
 }
 
-export const codeService = { addCode, getCodes }
+async function updateCode(updatedData) {
+  const { codeId, updatedNum } = updatedData
+  if (!codeId || !updatedNum) return null
+
+  try {
+    const collection = await dbService.getCollection('code')
+
+    const result = await collection.updateOne(
+      { _id: new ObjectId(codeId) },
+      { $set: { num: updatedNum } }
+    )
+
+    if (result.modifiedCount === 1) return result
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const codeService = { addCode, getCodes, updateCode }

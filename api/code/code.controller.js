@@ -25,3 +25,16 @@ export async function getCodes(req, res) {
     res.status(400).send({ err: 'Failed to get codes' })
   }
 }
+
+export async function updateCode(req, res) {
+  const updatedCode = req.body
+
+  try {
+    const success = await codeService.updateCode(updatedCode)
+    console.log(success)
+    if (success) return res.json({ success: true })
+    else throw new Error('Failed to update code')
+  } catch (err) {
+    res.status(400).send({ err: 'Failed to update code' })
+  }
+}
