@@ -32,5 +32,3 @@ async function connect() {
     throw err
   }
 }
-
-await connect()

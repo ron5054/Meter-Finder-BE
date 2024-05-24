@@ -1,9 +1,9 @@
 import express from 'express'
-import { requireAuth } from '../../middlewares/requireAuth.middleware.js'
 import { getUser } from './user.controller.js'
+import { requireAuth } from '../../middlewares/requireAuth.middleware.js'
 
 const router = express.Router()
 
-router.get('/:id', getUser)
+router.get('', requireAuth, getUser)
 
 export const userRoutes = router
