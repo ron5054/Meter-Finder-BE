@@ -15,12 +15,35 @@ async function addMeter(newMeter) {
 async function getMeter(num) {
   try {
     const collection = await dbService.getCollection('meter')
+
     const meter = await collection.findOne({ num: num })
-    console.log(meter)
     return meter
   } catch (err) {
     throw err
   }
 }
 
-export const meterService = { addMeter, getMeter }
+async function getMetersAround(latitude, longitude, radius) {
+  try {
+    const collection = await dbService.getCollection('meter')
+    const meters = await collection
+      .find({
+        location: {
+          $near: {
+            $geometry: {
+              type: 'Point',
+              coordinates: [latitude, longitude],
+            },
+            $maxDistance: radius,
+          },
+        },
+      })
+      .toArray()
+
+    return meters
+  } catch (err) {
+    throw err
+  }
+}
+
+export const meterService = { addMeter, getMeter, getMetersAround }

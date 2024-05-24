@@ -31,7 +31,6 @@ export async function updateCode(req, res) {
 
   try {
     const success = await codeService.updateCode(updatedCode)
-    console.log(success)
     if (success) return res.json({ success: true })
     else throw new Error('Failed to update code')
   } catch (err) {

@@ -20,3 +20,21 @@ export async function getMeter(req, res) {
     throw err
   }
 }
+
+export async function getMetersAround(req, res) {
+  const { latitude, longitude, radius } = req.query
+  try {
+    const meters = await meterService.getMetersAround(
+      parseFloat(latitude),
+      parseFloat(longitude),
+      parseFloat(radius)
+    )
+
+    if (!meters || !meters.length)
+      return res.status(404).json({ error: 'Meters not found' })
+
+    res.json(meters)
+  } catch (err) {
+    throw err
+  }
+}
