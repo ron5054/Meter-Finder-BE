@@ -21,13 +21,15 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 import { authRoutes } from './api/auth/auth.routes.js'
-import { meterRoutes } from './api/meters/meter.routes.js'
+import { meterRoutes } from './api/meter/meter.routes.js'
 import { codeRoutes } from './api/code/code.routes.js'
 import { userRoutes } from './api/user/user.routes.js'
+import { shiftRoutes } from './api/shift/shift.routes.js'
 app.use('/auth', authRoutes)
 app.use('/meter', meterRoutes)
 app.use('/code', codeRoutes)
 app.use('/user', userRoutes)
+app.use('/shift', shiftRoutes)
 
 const port = 3030
 server.listen(port, () => console.log(`Server is running on port ${port}`))
