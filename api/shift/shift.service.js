@@ -39,11 +39,11 @@ async function getShifts(userId) {
 
 async function removeShift(userId, shiftDate) {
   const collection = await dbService.getCollection('shift')
-  const date = new Date(shiftDate)
+  const date = new Date(shiftDate).toISOString().split('T')[0]
 
   const result = await collection.updateOne(
-    { userId: userId },
-    { $pull: { shifts: { date: date.toISOString().split('T')[0] } } }
+    { userId, 'shifts.date': date },
+    { $pull: { shifts: { date: date } } }
   )
 
   return result

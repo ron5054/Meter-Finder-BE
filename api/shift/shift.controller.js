@@ -1,3 +1,4 @@
+import { Long } from 'mongodb'
 import { shiftService } from './shift.service.js'
 
 export async function addShift(req, res) {
@@ -25,8 +26,10 @@ export async function removeShift(req, res) {
   const userId = req.user.id
 
   try {
-    const success = await shiftService.removeShift(userId, shiftDate)
-    if (!success) return res.status(404).json({ error: 'Shift not removed' })
+    const { modifiedCount } = await shiftService.removeShift(userId, shiftDate)
+
+    if (!modifiedCount)
+      return res.status(404).json({ error: 'Shift not removed' })
     res.json({ success: true })
   } catch (err) {
     throw err
