@@ -2,32 +2,21 @@ export const shiftService = { addShift, getShifts, removeShift }
 import { dbService } from '../../db/db.service.js'
 
 async function addShift(newShift, userId) {
-  const { date, read, unread } = newShift
+  const { date } = newShift
   const year = new Date(date).getFullYear()
   const month = new Date(date).getMonth() + 1
 
   const collection = await dbService.getCollection('shift')
+  const query = { userId, year, month }
 
-  const query = {
-    userId,
-    year,
-    month,
+  const update = {
+    $push: { shifts: { $each: [newShift], $sort: { date: 1 } } },
   }
 
-  const monthExists = await collection.findOne(query)
-
-  if (!monthExists) {
-    return await collection.insertOne({
-      userId,
-      year,
-      month,
-      shifts: [newShift],
-    })
-  } else {
-    return await collection.updateOne(query, {
-      $push: { shifts: newShift },
-    })
-  }
+  return await collection.findOneAndUpdate(query, update, {
+    upsert: true,
+    returnOriginal: false,
+  })
 }
 
 async function getShifts(userId) {
