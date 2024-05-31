@@ -27,17 +27,19 @@ async function getMetersAround(latitude, longitude, radius) {
   try {
     const collection = await dbService.getCollection('meter')
     const meters = await collection
-      .find({
-        location: {
-          $near: {
-            $geometry: {
+      .aggregate([
+        {
+          $geoNear: {
+            near: {
               type: 'Point',
               coordinates: [latitude, longitude],
             },
-            $maxDistance: radius,
+            distanceField: 'distance',
+            maxDistance: radius,
+            spherical: true,
           },
         },
-      })
+      ])
       .toArray()
 
     return meters

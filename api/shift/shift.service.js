@@ -10,7 +10,12 @@ async function addShift(newShift, userId) {
   const query = { userId, year, month }
 
   const update = {
-    $push: { shifts: { $each: [newShift], $sort: { date: 1 } } },
+    $push: {
+      shifts: {
+        $each: [newShift],
+        $sort: { date: 1 },
+      },
+    },
   }
 
   return await collection.findOneAndUpdate(query, update, {
