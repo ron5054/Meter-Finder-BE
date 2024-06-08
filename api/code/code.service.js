@@ -10,7 +10,7 @@ async function addCode(newCode) {
     if (code) throw new Error('Code already exists')
     else return await collection.insertOne(newCode)
   } catch (err) {
-    res.json({ success: false, message: err.message })
+    throw err
   }
 }
 

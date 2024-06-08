@@ -4,10 +4,13 @@ export async function addCode(req, res) {
   try {
     const newCode = req.body
     const code = await codeService.addCode(newCode)
+
     if (code) return res.json({ success: true })
     else throw new Error('Failed to add code')
   } catch (err) {
-    res.status(400).send({ err: 'Failed to add code' })
+    if (err.message === 'Code already exists')
+      return res.status(409).send({ err: err.message })
+    else return res.status(400).send({ err: 'Failed to add code' })
   }
 }
 
