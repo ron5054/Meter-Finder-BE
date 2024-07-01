@@ -25,7 +25,7 @@ async function login(username, password) {
   return { user, token }
 }
 
-async function signup({ username, password }) {
+async function signup({ username, password, name }) {
   const saltRounds = 10
 
   if (!username || !password)
@@ -36,5 +36,6 @@ async function signup({ username, password }) {
   await userService.add({
     username,
     password: hash,
+    name,
   })
 }

@@ -30,11 +30,12 @@ async function getById(userId) {
   }
 }
 
-async function add(user) {
+async function add({ username, password, name }) {
   try {
     const userToAdd = {
-      username: user.username,
-      password: user.password,
+      username,
+      password,
+      name,
     }
 
     const collection = await dbService.getCollection('user')
