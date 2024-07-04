@@ -40,3 +40,14 @@ export async function updateCode(req, res) {
     res.status(400).send({ err: 'Failed to update code' })
   }
 }
+
+export async function getCodesByAddress(req, res) {
+  const address = req.params.address
+  try {
+    const codes = await codeService.getCodesByAddress(address)
+    if (codes) return res.json(codes)
+    else res.status(404).send({ err: 'Did not find codes' })
+  } catch (err) {
+    res.status(400).send({ err: 'Failed to get codes' })
+  }
+}

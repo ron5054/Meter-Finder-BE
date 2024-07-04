@@ -58,4 +58,16 @@ async function updateCode(updatedData) {
   }
 }
 
-export const codeService = { addCode, getCodes, updateCode }
+async function getCodesByAddress(address) {
+  try {
+    const collection = await dbService.getCollection('code')
+    const codes = await collection
+      .find({ address: { $regex: address, $options: 'i' } })
+      .toArray()
+    return codes
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const codeService = { addCode, getCodes, updateCode, getCodesByAddress }

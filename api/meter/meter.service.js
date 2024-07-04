@@ -16,7 +16,9 @@ async function getMeter(num) {
   try {
     const collection = await dbService.getCollection('meter')
 
-    const meter = await collection.findOne({ num: num })
+    const meter = await collection.findOne({
+      num: { $regex: num, $options: 'i' },
+    })
     return meter
   } catch (err) {
     throw err
