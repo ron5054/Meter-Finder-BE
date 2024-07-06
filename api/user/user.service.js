@@ -6,6 +6,7 @@ export const userService = {
   add,
   getByUsername,
   getById,
+  update,
 }
 
 async function getByUsername(username) {
@@ -42,6 +43,22 @@ async function add({ username, password, name }) {
     await collection.insertOne(userToAdd)
     return userToAdd
   } catch (err) {
+    throw err
+  }
+}
+
+async function update(user) {
+  try {
+    const collection = await dbService.getCollection('user')
+    const { _id, ...updateFields } = user
+
+    await collection.updateOne(
+      { _id: new ObjectId(_id) },
+      { $set: updateFields }
+    )
+    return user
+  } catch (err) {
+    console.error(err)
     throw err
   }
 }
