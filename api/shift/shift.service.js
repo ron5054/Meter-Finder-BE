@@ -26,8 +26,7 @@ async function addShift(newShift, userId) {
 
 async function getShifts(userId) {
   const collection = await dbService.getCollection('shift')
-
-  const shifts = await collection.find({ userId }).toArray()
+  const shifts = await collection.find({ userId }).sort({ month: 1 }).toArray()
   return shifts
 }
 
