@@ -1,4 +1,3 @@
-import { Long } from 'mongodb'
 import { shiftService } from './shift.service.js'
 
 export async function addShift(req, res) {
@@ -35,3 +34,18 @@ export async function removeShift(req, res) {
     throw err
   }
 }
+
+export async function updateMonth(req, res) {
+  const updatedMonth = req.body
+
+  try {
+    const success = await shiftService.updateMonth(updatedMonth)
+
+    if (!success) return res.status(404).json({ error: 'Month not updated' })
+
+    res.json({ success: true })
+  } catch (err) {
+    throw err
+  }
+} 
+

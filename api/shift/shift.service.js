@@ -1,5 +1,6 @@
-export const shiftService = { addShift, getShifts, removeShift }
+export const shiftService = { addShift, getShifts, removeShift, updateMonth }
 import { dbService } from '../../db/db.service.js'
+import { ObjectId } from 'mongodb'
 
 async function addShift(newShift, userId) {
   const { date } = newShift
@@ -40,4 +41,11 @@ async function removeShift(userId, shiftDate) {
   )
 
   return result
+}
+
+async function updateMonth(updatedMonth) {
+  const collection = await dbService.getCollection('shift')
+  const { _id, ...updatedData } = updatedMonth
+
+  return collection.updateOne({ _id: new ObjectId(_id) }, { $set: updatedData })
 }
