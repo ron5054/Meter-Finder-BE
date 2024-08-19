@@ -48,4 +48,3 @@ export async function updateMonth(req, res) {
     throw err
   }
 } 
-
