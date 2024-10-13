@@ -19,10 +19,7 @@ async function addShift(newShift, userId) {
     },
   }
 
-  return await collection.findOneAndUpdate(query, update, {
-    upsert: true,
-    returnOriginal: false,
-  })
+  return collection.updateOne(query, update, { upsert: true })
 }
 
 async function getShifts(userId) {
