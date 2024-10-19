@@ -61,9 +61,15 @@ async function updateCode(updatedData) {
 async function getCodesByAddress(address) {
   try {
     const collection = await dbService.getCollection('code')
-    const codes = await collection
-      .find({ address: { $regex: address, $options: 'i' } })
-      .toArray()
+    const codes = await collection.aggregate([
+      {
+        $search: {
+          index: 'fuzzyAddressSearch',
+          text: { query: address, path: 'address', fuzzy: { maxEdits: 2 } },
+        },
+      },
+    ]).toArray()
+    
     return codes
   } catch (err) {
     console.error(err)
