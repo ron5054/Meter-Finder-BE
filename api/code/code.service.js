@@ -32,6 +32,7 @@ async function getCodes(location) {
           },
         },
       })
+      .sort({ address: 1 })
       .toArray()
 
     return codes
